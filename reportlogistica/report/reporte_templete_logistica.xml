@@ -1,0 +1,111 @@
+<?xml version="1.0"?>
+  <odoo>
+    <template id="reportlogistica.imp_rep_logistica">
+      <t t-call="web.html_container">
+        <t t-call="web.external_layout">
+          <t t-foreach="docs" t-as="doc"> 
+           <div class="page">
+              <h6 class="text-center" style="background-color:#EAEAEA;padding:5px;">Datos del proveedor</h6>  
+              <div class="row mt32 mb3" style="border:0px solid;padding:10px;">
+                <div class="col-6 bm-2">  
+                  <strong>No documento:</strong>
+                      <span t-field="doc.name"/><br/>
+                      <t t-if="doc.sale_id">
+                        <strong>Orden de venta :</strong>
+                        <span t-field="doc.sale_id"/><br/>
+                      </t>
+                      <t t-if="doc.purchase_id">
+                         <strong>Orden de compra :</strong>
+                          <span t-field="doc.purchase_id"/><br/>
+                      </t>
+                      <t  t-if="doc.provider_id">
+                        <strong>Proveedor :</strong>
+                          <span t-field="doc.provider_id"/><br/>
+                      </t>
+                      <strong>Transportista:</strong>
+                      <span t-field="doc.carrier_id"/><br/><br/>
+                </div>
+                <div class="col-6 bm-2">
+                    <strong>  Fecha y hora de llegada :</strong>
+                      <span t-field="doc.hora_llegada"/><br/>
+                    <strong>  Fecha y hora de salida :</strong>
+                      <span t-field="doc.hora_salida"/><br/>
+                </div>
+              </div>
+              <h6 class="text-center" style="background-color:#EAEAEA;padding:5px;">Datos del Chofer</h6>   
+              <div class="row mt32 mb32" style="border:0px solid;padding:10px;">
+                <div class="col-6 bm-2">
+                      <strong> Nombre del chofer:</strong>
+                       <span t-field="doc.nombre_chofer"/><br/>
+                      <strong>Linea de Transporte :</strong>
+                       <span t-field="doc.linea_trasporte_id"/><br/>
+                        <strong>Modalidad :</strong>
+                       <span t-field="doc.modalidad_id"/><br/>
+                        <strong>Origen :</strong>
+                       <span t-field="doc.origen"/><br/>
+                        <strong>Cedis :</strong>
+                       <span t-field="doc.cedis"/><br/>
+                </div>
+                <div class="col-6 bm-2">
+                      <strong>Tipo de licencia :</strong>
+                       <span t-field="doc.tipo_licencia"/><br/>
+                      <strong>N° de licencia :</strong>
+                       <span t-field="doc.licencia"/><br/>
+                      <strong>Economico :</strong>
+                       <span t-field="doc.economico_id"/><br/>
+                      <strong>  Destino :</strong>
+                       <span t-field="doc.destino"/><br/> 
+                </div>
+              </div>  
+               <h6 class="text-center" style="background-color:#EAEAEA;padding:10px;">Datos del transporte</h6>   <div class="row mt32 mb32" style="border:0px solid;padding:10px;">
+                <div class="col-6 bm-2">
+                      <strong>Tipo de transporte :</strong>
+                       <span t-field="doc.tipo_trans"/><br/>
+                      <strong>Placas de la caja :</strong>
+                       <span t-field="doc.placas_caja"/><br/>
+                </div>
+                <div class="col-6 bm-2">
+                      <strong>Placas del tractor :</strong>
+                       <span t-field="doc.placas_tractor"/><br/>
+                      <strong>Placas de la caja 2 :</strong>
+                       <span t-field="doc.placas_caja_dos"/><br/><br/><br/>
+                </div>
+                <table class="table table-striped">
+                    <thead>
+                       <h6><b>Incidencias </b></h6>
+                        <tr style="background-color:#1178B6">
+                          <th scope="col">Categorias</th>
+                        <th scope="col">Descripción</th>
+                       </tr>
+                     </thead>
+                  <tbody>
+                    <t  t-foreach="doc.problema_ids" t-as="val">
+                      <tr>
+                         <td >
+                            <span  t-esc="val.categoria_id.name"/>
+                         </td>
+                          <td>
+                            <span  t-esc="val.descripcion"/>
+                          </td>
+                      </tr>
+                    </t>
+                  </tbody>
+                </table>
+             </div>  
+             <h6 class="text-center" style="background-color:#EAEAEA;padding:10px;">Aprobaciones:</h6>   
+            <div class="row mt32 mb32" style="border:0px solid;padding:10px;">
+                <div class="col-6 bm-2">
+                      <strong>Quien aprobo :</strong>
+                       <span t-field="doc.aprobo"/><br/>
+                </div>
+                <div class="col-6 bm-2">
+                      <strong> Fecha :</strong>
+                       <span t-field="doc.fecha_aprobacion"/><br/>
+                </div>
+              </div>  
+            </div>
+        </t>    
+      </t> 
+    </t>
+  </template>
+</odoo>
