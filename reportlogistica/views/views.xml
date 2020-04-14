@@ -16,7 +16,7 @@
       <field name="model">product.template</field>
       <field name="type">tree</field>
       <field name="arch" type="xml">
-        <tree string="Informe de compra">
+        <tree string="Materia prima">
           <field name="default_code" string="N°"/>
           <field name="name" string="Producto"/>
           <field name="uom_id" string="Unidad"/>
@@ -49,6 +49,6 @@
     
 
     <!--AGREGAMOS UN MENUITEM QUE INVOQUE A LA ACCION QUE GENERA LA VISTA TREE DEL PRODUCT TEMPLATE-->
-    <menuitem id="action_compra" name="Stock" parent="purchase.menu_purchase_root" sequence="4" action="action_informe_compra" />
+    <menuitem id="action_compra" name="Materia prima" parent="purchase.menu_purchase_root" sequence="4" action="action_informe_compra" />
   </data>
 </odoo>

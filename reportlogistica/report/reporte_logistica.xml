@@ -11,7 +11,7 @@
         />
 
         <report
-        string="Reporte compra"
+        string="Materia prima"
         id="id_report_compra"
         model='product.template'
         name="reportlogistica.report_compra"
