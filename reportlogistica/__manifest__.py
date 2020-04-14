@@ -29,6 +29,7 @@
         'views/templates.xml',
         'report/reporte_logistica.xml',
         'report/reporte_templete_logistica.xml',
+        'report/reporte_compra.xml',
     ],
     # only loaded in demonstration mode
     'demo': [

@@ -1,5 +1,54 @@
 <odoo>
   <data>
-  
+ 	<record id="xpath_view_informe_compra" model="ir.ui.view">
+      <field name="name">xpath.view.informe.compra</field>
+      <field name="model">product.template</field>
+      <field name="inherit_id" ref="product.product_template_only_form_view"/>
+      <field name="arch" type="xml">
+        <xpath expr="//field[@name='barcode']" position="after">
+          <field name="fecha_previs"/>
+        </xpath>
+      </field>
+    </record>
+
+    <record id="view_informe_compra" model="ir.ui.view">
+      <field name="name">Informe.compra.view</field>
+      <field name="model">product.template</field>
+      <field name="type">tree</field>
+      <field name="arch" type="xml">
+        <tree string="Informe de compra">
+          <field name="default_code" string="N°"/>
+          <field name="name" string="Producto"/>
+          <field name="uom_id" string="Unidad"/>
+          <field name="qty_available" string="Inventario"/>
+          <field name="cant_compr_confirm" string="Cant compras confirmadas"/>
+          <field name="qty_available" string="Cantidad disponible"/>
+          <field name="dias_retraso" string="Dias de retraso"/>
+          <field name="dias_invent" string="Dias inventario" />
+          <field name="fecha_pedido_compra" string="Fecha compra"/>
+          <field name="fecha_previs" string="Fecha prevista"/>
+        </tree>
+      </field>
+    </record>
+
+    <record id="action_informe_compra" model="ir.actions.act_window">
+      <field name="name">Informe.compra.search</field>
+      <field name="res_model">product.template</field>
+      <field name="view_type">form</field>
+      <field name="view_mode">tree,form</field>
+      <field eval="False" name="view_id"/>
+      <field name="search_view_id" ref="view_informe_compra"/>
+    </record>
+
+    <record id="action_catalogo_almacen_view_tree" model="ir.actions.act_window.view">
+      <field eval="1" name="sequence"/>
+      <field name="view_mode">tree</field>
+      <field name="view_id" ref="view_informe_compra"/>
+      <field name="act_window_id" ref="action_informe_compra"/>
+    </record>
+    
+
+    <!--AGREGAMOS UN MENUITEM QUE INVOQUE A LA ACCION QUE GENERA LA VISTA TREE DEL PRODUCT TEMPLATE-->
+    <menuitem id="action_compra" name="Stock" parent="purchase.menu_purchase_root" sequence="4" action="action_informe_compra" />
   </data>
 </odoo>

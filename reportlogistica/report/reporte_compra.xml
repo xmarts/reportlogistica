@@ -1,0 +1,41 @@
+<odoo>
+  <template id="report_compra">
+    <t t-call="web.html_container">
+      <t t-call="web.external_layout">
+        <div class="page">
+          <!-- <h3>Products</h3> -->
+          <table  class="table table-sm">
+            <thead>
+              <tr>
+                <th>N°</th>
+                <th>Producto</th>
+                <th>Unidad</th>
+                <th>Inventario</th>
+                <th>Cant compras confirmadas</th>
+                <th>Cantidad disponible</th>
+                <th>Dias de retraso</th>
+                <th>Dias inventario</th>
+                <th>Fecha compra</th>
+                <th>Fecha prevista</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr t-foreach='docs' t-as='p'>
+                <td><t t-esc="p.default_code" /></td>
+                <td><t t-esc="p.name" /></td>
+                <td><t t-esc="p.uom_id.name" /></td>
+                <td><t t-esc="p.qty_available" /></td>
+                <td><t t-esc="p.cant_compr_confirm" /></td>
+                <td><t t-esc="p.qty_available" /></td>
+                <td><t t-esc="p.dias_retraso" /></td>
+                <td><t t-esc="'{0:,.2f}'.format(float(p.dias_invent))"/></td>
+                <td><t t-esc="p.fecha_pedido_compra" /></td>
+                <td><t t-esc="p.fecha_previs" /></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </t>
+    </t>
+  </template>
+</odoo>
