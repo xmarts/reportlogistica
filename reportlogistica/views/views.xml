@@ -16,7 +16,7 @@
       <field name="model">product.template</field>
       <field name="type">tree</field>
       <field name="arch" type="xml">
-        <tree string="Materia prima">
+        <tree string="Materia prima" create="false">
           <field name="default_code" string="N°"/>
           <field name="name" string="Producto"/>
           <field name="uom_id" string="Unidad"/>
@@ -32,7 +32,7 @@
     </record>
 
     <record id="action_informe_compra" model="ir.actions.act_window">
-      <field name="name">Informe.compra.search</field>
+      <field name="name">Informe de compra</field>
       <field name="res_model">product.template</field>
       <field name="view_type">form</field>
       <field name="view_mode">tree,form</field>
