@@ -53,3 +53,9 @@ class ReportCompra(models.Model):
 
 		for x in stock_move:
 			self.cant_compr_confirm += x.purchase_line_id.product_qty
+
+class InheritPayment(models.Model):
+	_inherit = 'account.payment'
+
+	description = fields.Text(string='Observaciones')
+	retenido = fields.Boolean(string='¿Esta retenido?')

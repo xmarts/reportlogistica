@@ -1,5 +1,6 @@
 <odoo>
   <data>
+    <!--VISTA SEARCH DEL PRODUCT TEMPLATE-->
  	<record id="xpath_view_informe_compra" model="ir.ui.view">
       <field name="name">xpath.view.informe.compra</field>
       <field name="model">product.template</field>
@@ -46,9 +47,74 @@
       <field name="view_id" ref="view_informe_compra"/>
       <field name="act_window_id" ref="action_informe_compra"/>
     </record>
+    <!--VISTA SEARCH DEL PRODUCT TEMPLATE-->
+
+    <!--VISTA SEARCH DEL ACCOUNT PAYMENT-->
+    <record id="xpath_view_informe_cheques" model="ir.ui.view">
+      <field name="name">xpath.view.informe.cheques</field>
+      <field name="model">account.payment</field>
+      <field name="inherit_id" ref="account.view_account_payment_form"/>
+      <field name="arch" type="xml">
+        <xpath expr="//field[@name='payment_transaction_id']" position="after">
+          <field name="description"/>
+          <field name="retenido"/>
+        </xpath>
+      </field>
+    </record>
+
+    <record id="view_informe_cheques" model="ir.ui.view">
+      <field name="name">Informe.cheques.view</field>
+      <field name="model">account.payment</field>
+      <field name="type">tree</field>
+      <field name="arch" type="xml">
+        <tree string="Informe de cheques" create="false">
+          <field name="payment_date" string="Fecha"/>
+          <field name="move_name" string="Póliza"/>
+          <field name="check_number" string="No. de Cheque"/>
+          <field name="journal_id" string="No. de Banco"/>
+          <field name="description" string="Observaciones"/>
+          <field name="communication" string="Descripcion"/>
+          <field name="amount" string="Importe"/>
+          <field name="state" string="Estado"/>
+          <field name="retenido" string="Retenido"/>
+          
+        </tree>
+      </field>
+    </record>
+
+    <record id="action_informe_cheques" model="ir.actions.act_window">
+      <field name="name">Informe de cheques</field>
+      <field name="res_model">account.payment</field>
+      <field name="view_type">form</field>
+      <field name="view_mode">tree,form</field>
+      <field name="domain">[('payment_method_id','=',4)]</field>
+      <field eval="False" name="view_id"/>
+      <field name="search_view_id" ref="view_informe_cheques"/>
+    </record>
+
+    <record id="action_inf_cheques_view_tree" model="ir.actions.act_window.view">
+      <field eval="1" name="sequence"/>
+      <field name="domain">[('payment_method_id','=',4)]</field>
+      <field name="view_mode">tree</field>
+      <field name="view_id" ref="view_informe_cheques"/>
+      <field name="act_window_id" ref="action_informe_cheques"/>
+    </record>
+    <!--VISTA SEARCH DEL ACCOUNT PAYMENT-->
     
 
     <!--AGREGAMOS UN MENUITEM QUE INVOQUE A LA ACCION QUE GENERA LA VISTA TREE DEL PRODUCT TEMPLATE-->
-    <menuitem id="action_compra" name="Materia prima" parent="purchase.menu_purchase_root" sequence="4" action="action_informe_compra" />
+    <menuitem id="action_compra" 
+      name="Materia prima" 
+      parent="purchase.menu_purchase_root" 
+      sequence="4" 
+      action="action_informe_compra" />
+
+      <!--AGREGAMOS UN MENUITEM PARA VISTA SEARCH DE ACCOUNT PAYMENT-->
+    <menuitem id="action_cheques" 
+      name="Informe de cheques impresos" 
+      parent="account.account_reports_management_menu"
+      action="action_informe_cheques"
+      sequence="11"/>
+
   </data>
 </odoo>

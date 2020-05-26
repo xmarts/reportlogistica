@@ -1,0 +1,60 @@
+<odoo>
+  <template id="check_report">
+    <t t-call="web.html_container">
+      <t t-call="web.external_layout">
+        <div class="page">
+          <!-- <h3>Products</h3> -->
+          <table  class="table table-sm">
+            <thead>
+              <tr>
+                <th>Fecha</th>
+                <th>Póliza</th>
+                <th>No. de cheque</th>
+                <th>No. Banco</th>
+                <th>Observaciones</th>
+                <th>Descripción</th>
+                <th>Importe</th>
+                <th>Estado</th>
+                <th>Retenido</th>
+                
+              </tr>
+            </thead>
+            <tbody>
+              <tr t-foreach='docs' t-as='p'>
+                <td style="font-size:10pt;"><t t-esc="p.payment_date"/></td>
+                <td style="font-size:10pt;"><t t-esc="p.move_name"/></td>
+                <td style="font-size:10pt;"><t t-esc="p.check_number"/></td>
+                <td style="font-size:10pt;"><t t-esc="p.journal_id.name"/></td>
+                <td style="font-size:10pt;"><t t-esc="p.description"/></td>
+                <td style="font-size:10pt;"><t t-esc="p.communication"/></td>
+                <td style="font-size:10pt;"><span>$</span><t t-esc="'{0:,.2f}'.format(float(p.amount))"  /></td>
+
+                <t t-if="p.state == draft">
+                  <td><span style="font-size:10pt;" >Borrador</span></td>
+                </t>
+                <t t-if="p.state == 'posted' ">
+                  <td style="font-size:10pt;">Publicado</td>
+                </t>
+                <t t-if="p.state == 'sent' ">
+                  <td style="font-size:10pt;">Enviado</td>
+                </t>
+                <t t-if="p.state == 'reconcilied' ">
+                  <td style="font-size:10pt;">Conciliado</td>
+                </t>
+                <t t-if="p.state == 'cancelled' ">
+                  <td style="font-size:10pt;">Cancelado</td>
+                </t>
+                <t t-if="p.retenido == False">
+                  <td style="font-size:10pt;">SI</td>
+                </t>
+                <t t-else="">
+                  <td style="font-size:10pt;">NO</td>
+                </t>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </t>
+    </t>
+  </template>
+</odoo>
