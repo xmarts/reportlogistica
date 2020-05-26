@@ -44,7 +44,7 @@
                 <t t-if="p.state == 'cancelled' ">
                   <td style="font-size:10pt;">Cancelado</td>
                 </t>
-                <t t-if="p.retenido == False">
+                <t t-if="p.retenido == True">
                   <td style="font-size:10pt;">SI</td>
                 </t>
                 <t t-else="">
