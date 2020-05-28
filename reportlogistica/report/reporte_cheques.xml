@@ -29,7 +29,7 @@
                 <td style="font-size:10pt;"><t t-esc="p.communication"/></td>
                 <td style="font-size:10pt;"><span>$</span><t t-esc="'{0:,.2f}'.format(float(p.amount))"  /></td>
 
-                <t t-if="p.state == draft">
+                <t t-if="p.state == 'draft'">
                   <td><span style="font-size:10pt;" >Borrador</span></td>
                 </t>
                 <t t-if="p.state == 'posted' ">
@@ -52,6 +52,13 @@
                 </t>
               </tr>
             </tbody>
+          </table>
+          <table>
+                <t t-set="total" t-value="0"/>
+                <tr t-foreach='docs' t-as='t'>
+                  <t t-set="total" t-value="total+t.amount"/>
+                </tr>
+                <td>Total: $<t t-esc="'{0:,.2f}'.format(float(total))"/></td>
           </table>
         </div>
       </t>
