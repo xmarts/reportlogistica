@@ -1,67 +1,82 @@
 <odoo>
-  <template id="check_report">
-    <t t-call="web.html_container">
-      <t t-call="web.external_layout">
-        <div class="page">
-          <!-- <h3>Products</h3> -->
-          <table  class="table table-sm">
-            <thead>
-              <tr>
-                <th>Fecha</th>
-                <th>Póliza</th>
-                <th>No. de cheque</th>
-                <th>No. Banco</th>
-                <th>Observaciones</th>
-                <th>Descripción</th>
-                <th>Importe</th>
-                <th>Estado</th>
-                <th>Retenido</th>
-                
-              </tr>
-            </thead>
-            <tbody>
-              <tr t-foreach='docs' t-as='p'>
-                <td style="font-size:10pt;"><t t-esc="p.payment_date"/></td>
-                <td style="font-size:10pt;"><t t-esc="p.move_name"/></td>
-                <td style="font-size:10pt;"><t t-esc="p.check_number"/></td>
-                <td style="font-size:10pt;"><t t-esc="p.journal_id.name"/></td>
-                <td style="font-size:10pt;"><t t-esc="p.description"/></td>
-                <td style="font-size:10pt;"><t t-esc="p.communication"/></td>
-                <td style="font-size:10pt;"><span>$</span><t t-esc="'{0:,.2f}'.format(float(p.amount))"  /></td>
-
-                <t t-if="p.state == 'draft'">
-                  <td><span style="font-size:10pt;" >Borrador</span></td>
-                </t>
-                <t t-if="p.state == 'posted' ">
-                  <td style="font-size:10pt;">Publicado</td>
-                </t>
-                <t t-if="p.state == 'sent' ">
-                  <td style="font-size:10pt;">Enviado</td>
-                </t>
-                <t t-if="p.state == 'reconcilied' ">
-                  <td style="font-size:10pt;">Conciliado</td>
-                </t>
-                <t t-if="p.state == 'cancelled' ">
-                  <td style="font-size:10pt;">Cancelado</td>
-                </t>
-                <t t-if="p.retenido == True">
-                  <td style="font-size:10pt;">SI</td>
-                </t>
-                <t t-else="">
-                  <td style="font-size:10pt;">NO</td>
-                </t>
-              </tr>
-            </tbody>
-          </table>
-          <table>
-                <t t-set="total" t-value="0"/>
-                <tr t-foreach='docs' t-as='t'>
-                  <t t-set="total" t-value="total+t.amount"/>
+  <data>
+    <template id="check_report">
+      <t t-call="web.html_container">
+        <t t-call="web.external_layout">
+         
+          <div class="page">
+            <!-- <h3>Products</h3> -->
+            <table  class="table table-sm" style="margin-top:20px;">
+              <thead>
+                <tr>
+                  <th style="font-size:10pt;">Fecha</th>
+                  <th style="font-size:10pt;">Póliza</th>
+                  <th style="font-size:10pt;">No. de cheque</th>
+                  <th style="font-size:10pt;">No. Banco</th>
+                  <th style="font-size:10pt;">Observaciones</th>
+                  <th style="font-size:10pt;">Descripción</th>
+                  <th style="font-size:10pt;">Importe</th>
+                  <th style="font-size:10pt;">Estado</th>
+                  <th style="font-size:10pt;">Retenido</th>
                 </tr>
-                <td>Total: $<t t-esc="'{0:,.2f}'.format(float(total))"/></td>
-          </table>
-        </div>
+              </thead>
+              <tbody>
+                <tr t-foreach='docs' t-as='p'>
+                  <td style="font-size:9pt;"><t t-esc="p.payment_date"/></td>
+                  <td style="font-size:9pt;"><t t-esc="p.move_name"/></td>
+                  <td style="font-size:9pt;"><t t-esc="p.check_number"/></td>
+                  <td style="font-size:9pt;"><t t-esc="p.journal_id.name"/></td>
+                  <td style="font-size:9pt;"><t t-esc="p.communication"/></td>
+                  <td style="font-size:9pt;"><t t-esc="p.partner_id.name"/></td>
+                  <td style="font-size:9pt;"><span>$</span><t t-esc="'{0:,.2f}'.format(float(p.amount))"  /></td>
+
+                  <t t-if="p.state == 'draft'">
+                    <td><span style="font-size:9pt;" >Borrador</span></td>
+                  </t>
+                  <t t-if="p.state == 'posted' ">
+                    <td style="font-size:9pt;">Publicado</td>
+                  </t>
+                  <t t-if="p.state == 'sent' ">
+                    <td style="font-size:9pt;">Enviado</td>
+                  </t>
+                  <t t-if="p.state == 'reconcilied' ">
+                    <td style="font-size:9pt;">Conciliado</td>
+                  </t>
+                  <t t-if="p.state == 'cancelled' ">
+                    <td style="font-size:9pt;">Cancelado</td>
+                  </t>
+                  <t t-if="p.retenido == True">
+                    <td style="font-size:9pt;">SI</td>
+                  </t>
+                  <t t-else="">
+                    <td style="font-size:9pt;">NO</td>
+                  </t>
+                </tr>
+              </tbody>
+            </table>
+            <table>
+                  <t t-set="total" t-value="0"/>
+                  <tr t-foreach='docs' t-as='t'>
+                    <t t-set="total" t-value="total+t.amount"/>
+                  </tr>
+                  <td style="font-size:10pt;">Total: $<t t-esc="'{0:,.2f}'.format(float(total))"/></td>
+            </table>
+          </div>
+        </t>
       </t>
-    </t>
-  </template>
+    </template>
+     <record id="paperformat_reporte_cheques" model="report.paperformat"> 
+              <field name="name">Reporte de Cheques</field>
+              <field name="default" eval="True"/>
+              <field name="format">A4</field>
+              <field name="page_height">0</field>
+              <field name="page_width">0</field>
+              <field name="orientation">Landscape</field>
+              <field name="margin_left">7</field>
+              <field name="margin_right">7</field>
+              <field name="header_line" eval="False"/>
+              <field name="header_spacing">45</field>
+              <field name="dpi">90</field>
+    </record>
+  </data>
 </odoo>

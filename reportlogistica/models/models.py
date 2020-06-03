@@ -57,5 +57,4 @@ class ReportCompra(models.Model):
 class InheritPayment(models.Model):
 	_inherit = 'account.payment'
 
-	description = fields.Text(string='Observaciones')
 	retenido = fields.Boolean(string='¿Esta retenido?')

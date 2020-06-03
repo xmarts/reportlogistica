@@ -1,7 +1,7 @@
 <odoo>
   <data>
     <!--VISTA SEARCH DEL PRODUCT TEMPLATE-->
- 	<record id="xpath_view_informe_compra" model="ir.ui.view">
+  <record id="xpath_view_informe_compra" model="ir.ui.view">
       <field name="name">xpath.view.informe.compra</field>
       <field name="model">product.template</field>
       <field name="inherit_id" ref="product.product_template_only_form_view"/>
@@ -56,7 +56,6 @@
       <field name="inherit_id" ref="account.view_account_payment_form"/>
       <field name="arch" type="xml">
         <xpath expr="//field[@name='payment_transaction_id']" position="after">
-          <field name="description"/>
           <field name="retenido"/>
         </xpath>
       </field>
@@ -72,8 +71,8 @@
           <field name="move_name" string="Póliza"/>
           <field name="check_number" string="No. de Cheque"/>
           <field name="journal_id" string="No. de Banco"/>
-          <field name="description" string="Observaciones"/>
-          <field name="communication" string="Descripcion"/>
+          <field name="partner_id" string="Descripcion"/>
+          <field name="communication" string="Observaciones"/>
           <field name="amount" string="Importe"/>
           <field name="state" string="Estado"/>
           <field name="retenido" string="Retenido"/>
