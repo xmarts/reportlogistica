@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_report_wizard_check" model="ir.ui.view">
+        <field name="name">Reporte de cheques impresos</field>
+        <field name="model">report.check.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Choose The Details">
+                <group>
+                    <group>
+                        <field name="filter_date" widget="radio"/>
+                        <field name="cuenta" attrs="{'invisible':['|',('filter_date','=','all'),('filter_date','=','dates')]}"/>
+                        <field name="date_from" attrs="{'invisible':['|',('filter_date','=','all'),('filter_date','=','diario')]}"/>
+                        <field name="date_to" attrs="{'invisible':['|',('filter_date','=','all'),('filter_date','=','diario')]}"/>
+                    </group>
+                </group>
+                <footer>
+                    <button name="filter" string="Aceptar" type="object" class="oe_highlight" />
+                    or
+                    <button string="Cancelar" class="oe_link" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="id_wizard_report_cheques" model="ir.actions.act_window">
+            <field name="name">Reporte de cheques</field>
+            <field name="res_model">report.check.wizard</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="view_report_wizard_check"/>
+            <field name="target">new</field>
+            <field name="context">{'default_filter_date': 'all'}</field>
+    </record>
+
+    <menuitem id="menu_valuation_2" 
+        name="Reporte de cheques" 
+        parent="reportlogistica.action_cheques" 
+        sequence="600" 
+        action="id_wizard_report_cheques"/>
+
+</odoo>

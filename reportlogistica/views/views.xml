@@ -93,7 +93,6 @@
 
     <record id="action_inf_cheques_view_tree" model="ir.actions.act_window.view">
       <field eval="1" name="sequence"/>
-      <field name="domain">[('payment_method_id','=',4)]</field>
       <field name="view_mode">tree</field>
       <field name="view_id" ref="view_informe_cheques"/>
       <field name="act_window_id" ref="action_informe_cheques"/>
@@ -111,9 +110,9 @@
       <!--AGREGAMOS UN MENUITEM PARA VISTA SEARCH DE ACCOUNT PAYMENT-->
     <menuitem id="action_cheques" 
       name="Informe de cheques impresos" 
-      parent="account.account_reports_management_menu"
+      parent="account.menu_finance_reports"
       action="action_informe_cheques"
-      sequence="11"/>
+      sequence="450"/>
 
   </data>
 </odoo>

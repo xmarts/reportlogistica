@@ -58,3 +58,9 @@ class InheritPayment(models.Model):
 	_inherit = 'account.payment'
 
 	retenido = fields.Boolean(string='¿Esta retenido?')
+
+	def user_log(self):
+		login  = self.env['res.users'].search([('id','=',self.env.user.id)])
+		for rec in login:
+			usuario = rec.name
+		return usuario

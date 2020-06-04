@@ -1,68 +1,140 @@
 <odoo>
   <data>
-    <template id="check_report">
+    <template id="reportlogistica.rep_cheques_template">
+       <t t-if="not o" t-set="o" t-value="doc"/>
+    <t t-if="not company">
+        <t t-if="company_id">
+            <t t-set="company" t-value="company_id"/>
+        </t>
+        <t t-elif="o and 'company_id' in o">
+            <t t-set="company" t-value="o.company_id.sudo()"/>
+        </t>
+        <t t-else="else">
+            <t t-set="company" t-value="res_company"/>
+        </t>
+    </t>
+    <div class="header" style="margin-top:20px;" >
+        <div class="row mt32 mb32" style="width:100%">
+          <div class="col-6" style="width:30%">
+            <img t-att-src="image_data_uri(company.logo)" style="max-height: 100px; " alt="Logo"/>
+            <br/>
+             <t t-set="count2" t-value="0"/>
+              <t t-foreach="docs.diarios()" t-as="di">
+                <t t-if="count2 == 0  and di['diario'] != False">
+                  <strong style="font-size:12pt;">Chequera:  </strong><span style="font-size:12pt;" t-esc="di['diario']"/>
+                  <t t-set="count2" t-value="count2+1"/>
+                </t>
+              </t>
+          </div>
+          <div class="col-6 text-center" style="width:40%">
+            <h4><strong>Embotelladora El Jarochito, S.A. de C.V</strong></h4>
+           <h5>Movimientos de Chequeras</h5>
+
+              <t t-set="count" t-value="0"/>
+              <t t-foreach="docs.fechas()" t-as="fe">
+                <t t-if="count == 0  and fe['fecha1'] != False or fe['fecha2'] != False">
+                  <strong>Fechas:  </strong> <span t-esc="fe['fecha1']"/><span>  al  </span><span t-esc="fe['fecha2']"/>
+                  <t t-set="count" t-value="count+1"/>
+                </t>
+              </t><br/>
+             
+
+
+          </div>
+          <div class="col-6 text-center" style="width:30%">
+              <h6><strong>Fecha y hora de impresion:</strong> <br/><span t-esc="context_timestamp(datetime.datetime.now()).strftime('%Y-%m-%d %H:%M')"/> </h6>
+              
+              <br/>
+              <t t-set="usuario" t-value=""/>
+              <t t-foreach="docs" t-as="login">
+                <t t-set="usuario" t-value="login.user_log()"/>
+              </t>
+              <strong>Usuario: </strong><span t-esc="usuario"/>
+              
+           </div>
+        </div>
+    </div>
+    <div class="article o_report_layout_boxed" t-att-data-oe-model="o and o._name" t-att-data-oe-id="o and o.id" t-att-data-oe-lang="o and o.env.context.get('lang')">
+      <t t-raw="0"/>
+    </div>
+    <div class="footer o_standard_footer">
+        <div class="text-center" style="border-top: 1px solid black;">
+            <ul class="list-inline mb4">
+                <li t-if="company.phone" class="list-inline-item">Tel: <span t-field="company.phone"/></li>
+                <li t-if="company.email" class="list-inline-item">Mail: <span t-field="company.email"/></li>
+                <li t-if="company.website" class="list-inline-item">Web: <span t-field="company.website"/></li>
+                <li t-if="company.vat" class="list-inline-item"><t t-esc="company.country_id.vat_label or 'Tax ID'"/>: <span t-field="company.vat"/></li>
+            </ul>
+            <div t-field="company.report_footer"/>
+            <div t-if="report_type == 'pdf'">
+                Page: <span class="page"/> / <span class="topage"/>
+            </div>
+        </div>
+    </div>
+    </template>
+    <template id="reporte_cheques">
       <t t-call="web.html_container">
-        <t t-call="web.external_layout">
+        <t t-call="reportlogistica.rep_cheques_template">
          
           <div class="page">
             <!-- <h3>Products</h3> -->
-            <table  class="table table-sm" style="margin-top:20px;">
+            <table  class="table table-condensed" style="margin-top:20px; border: medium transparent;">
               <thead>
                 <tr>
-                  <th style="font-size:10pt;">Fecha</th>
-                  <th style="font-size:10pt;">Póliza</th>
-                  <th style="font-size:10pt;">No. de cheque</th>
-                  <th style="font-size:10pt;">No. Banco</th>
-                  <th style="font-size:10pt;">Observaciones</th>
-                  <th style="font-size:10pt;">Descripción</th>
-                  <th style="font-size:10pt;">Importe</th>
-                  <th style="font-size:10pt;">Estado</th>
-                  <th style="font-size:10pt;">Retenido</th>
+                  <th style="font-size:8pt; border: medium transparent;">Fecha</th>
+                  <th style="font-size:8pt; border: medium transparent;">Póliza</th>
+                  <th style="font-size:8pt; border: medium transparent;">No. Cheque</th>
+                  <th style="font-size:8pt; border: medium transparent;">No. Banco</th>
+                  <th style="font-size:8pt; border: medium transparent;">Observaciones</th>
+                  <th style="font-size:8pt; border: medium transparent;">Descripción</th>
+                  <th style="font-size:8pt; border: medium transparent;">Importe</th>
+                  <th style="font-size:8pt; border: medium transparent;">Estado</th>
+                  <th style="font-size:8pt; border: medium transparent;">Retenido</th>
                 </tr>
               </thead>
               <tbody>
                 <tr t-foreach='docs' t-as='p'>
-                  <td style="font-size:9pt;"><t t-esc="p.payment_date"/></td>
-                  <td style="font-size:9pt;"><t t-esc="p.move_name"/></td>
-                  <td style="font-size:9pt;"><t t-esc="p.check_number"/></td>
-                  <td style="font-size:9pt;"><t t-esc="p.journal_id.name"/></td>
-                  <td style="font-size:9pt;"><t t-esc="p.communication"/></td>
-                  <td style="font-size:9pt;"><t t-esc="p.partner_id.name"/></td>
-                  <td style="font-size:9pt;"><span>$</span><t t-esc="'{0:,.2f}'.format(float(p.amount))"  /></td>
+                  <td style="font-size:8pt; border: medium transparent;"><t t-esc="p.payment_date"/></td>
+                  <td style="font-size:8pt; border: medium transparent;"><t t-esc="p.move_name"/></td>
+                  <td style="font-size:8pt; border: medium transparent;"><t t-esc="p.check_number"/></td>
+                  <td style="font-size:8pt; border: medium transparent;"><t t-esc="p.journal_id.name"/></td>
+                  <td style="font-size:8pt; border: medium transparent;"><t t-esc="p.communication"/></td>
+                  <td style="font-size:8pt; border: medium transparent;"><t t-esc="p.partner_id.name"/></td>
+                  <td style="font-size:8pt; border: medium transparent;"><span>$</span><t t-esc="'{0:,.2f}'.format(float(p.amount))"  /></td>
 
                   <t t-if="p.state == 'draft'">
-                    <td><span style="font-size:9pt;" >Borrador</span></td>
+                    <td style="font-size:8pt; border: medium transparent;"><span>Borrador</span></td>
                   </t>
                   <t t-if="p.state == 'posted' ">
-                    <td style="font-size:9pt;">Publicado</td>
+                    <td style="font-size:8pt; border: medium transparent;">Publicado</td>
                   </t>
                   <t t-if="p.state == 'sent' ">
-                    <td style="font-size:9pt;">Enviado</td>
+                    <td style="font-size:8pt; border: medium transparent;">Enviado</td>
                   </t>
                   <t t-if="p.state == 'reconcilied' ">
-                    <td style="font-size:9pt;">Conciliado</td>
+                    <td style="font-size:8pt; border: medium transparent;">Conciliado</td>
                   </t>
                   <t t-if="p.state == 'cancelled' ">
-                    <td style="font-size:9pt;">Cancelado</td>
+                    <td style="font-size:8pt; border: medium transparent;">Cancelado</td>
                   </t>
                   <t t-if="p.retenido == True">
-                    <td style="font-size:9pt;">SI</td>
+                    <td style="font-size:8pt; border: medium transparent; background:white;">SI</td>
                   </t>
                   <t t-else="">
-                    <td style="font-size:9pt;">NO</td>
+                    <td style="font-size:8pt; border: medium transparent; background:white;">NO</td>
                   </t>
                 </tr>
               </tbody>
             </table>
-            <table>
+            <table  style="border: medium transparent">
                   <t t-set="total" t-value="0"/>
                   <tr t-foreach='docs' t-as='t'>
                     <t t-set="total" t-value="total+t.amount"/>
                   </tr>
-                  <td style="font-size:10pt;">Total: $<t t-esc="'{0:,.2f}'.format(float(total))"/></td>
+                  <td style="font-size:11pt; border: medium transparent; background:white;">Total: $<t t-esc="'{0:,.2f}'.format(float(total))"/></td>
             </table>
           </div>
-        </t>
+          </t>
       </t>
     </template>
      <record id="paperformat_reporte_cheques" model="report.paperformat"> 
@@ -74,8 +146,9 @@
               <field name="orientation">Landscape</field>
               <field name="margin_left">7</field>
               <field name="margin_right">7</field>
+              <field name="margin-bottom">200</field>
               <field name="header_line" eval="False"/>
-              <field name="header_spacing">45</field>
+              <field name="header_spacing">30</field>
               <field name="dpi">90</field>
     </record>
   </data>
