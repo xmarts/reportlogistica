@@ -72,8 +72,8 @@ class inherit_account_pay(models.Model):
 		id_returned = cr.fetchone()
 		dato = self.env['report.check.wizard'].search([('id','=',id_returned)])
 		for rec in dato:
-			d1 = str(dato.date_from)
-			d2 = str(dato.date_to)
+			d1 = dato.date_from
+			d2 = dato.date_to
 			if d1 != 'False' and d1 != 'False' and dato.cuenta:
 				file = {
 				'fecha1':d1,
