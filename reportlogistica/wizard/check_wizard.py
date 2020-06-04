@@ -48,6 +48,7 @@ class ReportWizard(models.TransientModel):
 				'res_model': 'account.payment',
 				'domain': [('payment_method_id','=',4),('journal_id','=',self.cuenta.id)],
 			}
+			print('DIARIOOOOOOOOO',self.cuenta)
 			return action
 		if self.filter_date == 'fe_di':
 			action = {
@@ -72,12 +73,10 @@ class inherit_account_pay(models.Model):
 		id_returned = cr.fetchone()
 		dato = self.env['report.check.wizard'].search([('id','=',id_returned)])
 		for rec in dato:
-			d1 = dato.date_from
-			d2 = dato.date_to
-			if d1 != 'False' and d1 != 'False' and dato.cuenta:
+			if dato.date_from != 'False' and dato.date_to != 'False':
 				file = {
-				'fecha1':d1,
-				'fecha2':d2,
+				'fecha1':str(dato.date_from),
+				'fecha2':str(dato.date_to)
 				}
 				lista.append(file)
 		return lista
