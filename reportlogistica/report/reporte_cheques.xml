@@ -83,8 +83,8 @@
                 <tr>
                   <th style="font-size:7pt; border: medium transparent; width:8%">Fecha pago</th>
                   <th style="font-size:7pt; border: medium transparent;">Póliza</th>
-                  <th style="font-size:7pt; border: medium transparent; width:12%">No. Cheque</th>
-                  <th style="font-size:7pt; border: medium transparent;">No. Banco</th>
+                  <th style="font-size:7pt; border: medium transparent;">No Cheque</th>
+                  <th style="font-size:7pt; border: medium transparent; width:12%">No Banco</th>
                   <th style="font-size:7pt; border: medium transparent;">Observaciones</th>
                   <th style="font-size:7pt; border: medium transparent;">Descripción</th>
                   <th style="font-size:7pt; border: medium transparent;">Importe</th>
