@@ -81,7 +81,7 @@
             <table  class="table table-condensed" style="margin-top:20px; border: medium transparent;">
               <thead>
                 <tr>
-                  <th style="font-size:8pt; border: medium transparent;">Fecha pago</th>
+                  <th style="font-size:8pt; border: medium transparent; width:8%">Fecha pago</th>
                   <th style="font-size:8pt; border: medium transparent;">Póliza</th>
                   <th style="font-size:8pt; border: medium transparent;">No. Cheque</th>
                   <th style="font-size:8pt; border: medium transparent;">No. Banco</th>
