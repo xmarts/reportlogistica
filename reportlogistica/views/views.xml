@@ -104,8 +104,8 @@
     <menuitem id="action_compra" 
       name="Materia prima" 
       parent="purchase.menu_purchase_root" 
-      sequence="4" 
-      action="action_informe_compra" />
+      sequence="4"/>
+
 
       <!--AGREGAMOS UN MENUITEM PARA VISTA SEARCH DE ACCOUNT PAYMENT-->
     <menuitem id="action_cheques" 
