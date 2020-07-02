@@ -27,16 +27,14 @@
         'security/ir.model.access.csv',
         'views/views.xml',
         'views/templates.xml',
+        'wizard/report_check_wizard.xml',
         'report/reporte_cheques.xml',
+        'report/reporte_compra.xml',
         'report/reporte_logistica.xml',
         'report/reporte_templete_logistica.xml',
-        'report/reporte_compra.xml',
-        'wizard/report_check_wizard.xml',
-        'wizard/materia_prima_wizard.xml',
     ],
     # only loaded in demonstration mode
     'demo': [
         'demo/demo.xml',
     ],
 }
-

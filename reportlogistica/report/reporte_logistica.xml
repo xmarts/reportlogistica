@@ -18,6 +18,7 @@
         file="reportlogistica.report_compra"
         report_type="qweb-pdf"
         print_report_name="'Materia Prima'"
+        paperformat="reportlogistica.paperformat_reporte_compra"
         />
 
         <report

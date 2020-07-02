@@ -8,6 +8,7 @@
       <field name="arch" type="xml">
         <xpath expr="//field[@name='barcode']" position="after">
           <field name="fecha_previs"/>
+          <field name = "fecha_pedido_compra" invisible="1"/>
         </xpath>
       </field>
     </record>
@@ -48,6 +49,7 @@
       <field name="act_window_id" ref="action_informe_compra"/>
     </record>
     <!--VISTA SEARCH DEL PRODUCT TEMPLATE-->
+
 
     <!--VISTA SEARCH DEL ACCOUNT PAYMENT-->
     <record id="xpath_view_informe_cheques" model="ir.ui.view">
@@ -99,13 +101,12 @@
     </record>
     <!--VISTA SEARCH DEL ACCOUNT PAYMENT-->
     
-
     <!--AGREGAMOS UN MENUITEM QUE INVOQUE A LA ACCION QUE GENERA LA VISTA TREE DEL PRODUCT TEMPLATE-->
     <menuitem id="action_compra" 
       name="Materia prima" 
-      parent="purchase.menu_purchase_root" 
+      parent="purchase.menu_purchase_root"
+      action="action_informe_compra"
       sequence="4"/>
-
 
       <!--AGREGAMOS UN MENUITEM PARA VISTA SEARCH DE ACCOUNT PAYMENT-->
     <menuitem id="action_cheques" 

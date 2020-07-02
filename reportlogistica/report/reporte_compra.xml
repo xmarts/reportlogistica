@@ -1,48 +1,124 @@
 <odoo>
-  <template id="report_compra">
-    <t t-call="web.html_container">
-      <t t-call="web.external_layout">
-        <div class="page">
-          <!-- <h3>Products</h3> -->
-          <t t-set="count" t-value="0"/>
+<template id="reportlogistica.rep_compra_template">
+       <t t-if="not o" t-set="o" t-value="doc"/>
+    <t t-if="not company">
+        <t t-if="company_id">
+            <t t-set="company" t-value="company_id"/>
+        </t>
+        <t t-elif="o and 'company_id' in o">
+            <t t-set="company" t-value="o.company_id.sudo()"/>
+        </t>
+        <t t-else="else">
+            <t t-set="company" t-value="res_company"/>
+        </t>
+    </t>
+    <div class="header" style="margin-top:20px;" >
+        <div class="row mt32 mb32" style="width:100%">
+          <div class="col-6" style="width:30%">
+            <img t-att-src="image_data_uri(company.logo)" style="max-height: 100px; " alt="Logo"/>
+            <br/>
+          </div>
+          <div class="col-6 text-center" style="width:40%">
+            <h4><strong>Embotelladora El Jarochito, S.A. de C.V</strong></h4>
+           <h5>Materia Prima</h5>
+           <br/>
+           <t t-set="count" t-value="0"/>
               <t t-foreach="docs.fechas()" t-as="fe">
-                <t t-if="count == 0  and fe['fecha1'] != 'False' or fe['fecha2'] != 'False'">
-                  <strong>Fechas:  </strong> <span t-esc="fe['fecha1']"/><span>  al  </span><span t-esc="fe['fecha2']"/>
-                  <t t-set="count" t-value="count+1"/>
+                <t t-if="count == 0 ">
+                  <t t-if="fe['fecha1'] and fe['fecha2']">
+                    <strong>Fechas:  </strong> 
+                    <span t-esc="fe['fecha1'].strftime('%d-%m-%Y')"/><span>  al  </span><span t-esc="fe['fecha2'].strftime('%d-%m-%Y')"/>
+                    <t t-set="count" t-value="count+1"/>
+                  </t>
                 </t>
               </t>
-          <table  class="table table-sm">
+          </div>
+          <div class="col-6 text-center" style="width:30%">
+              <h6><strong>Fecha y hora de impresion:</strong> <br/><span t-esc="context_timestamp(datetime.datetime.now()).strftime('%d-%m-%Y %H:%M')"/> </h6>
+              
+              <br/>
+              <t t-set="usuario" t-value=""/>
+              <t t-foreach="docs" t-as="login">
+                <t t-set="usuario" t-value="login.user_log()"/>
+              </t>
+              <strong>Usuario: </strong><span t-esc="usuario"/>
+              
+           </div>
+        </div>
+    </div>
+    <div class="article o_report_layout_boxed" t-att-data-oe-model="o and o._name" t-att-data-oe-id="o and o.id" t-att-data-oe-lang="o and o.env.context.get('lang')">
+      <t t-raw="0"/>
+    </div>
+    <div class="footer o_standard_footer">
+        <div class="text-center" style="border-top: 1px solid black;">
+            <ul class="list-inline mb4">
+                <li t-if="company.phone" class="list-inline-item">Tel: <span t-field="company.phone"/></li>
+                <li t-if="company.email" class="list-inline-item">Mail: <span t-field="company.email"/></li>
+                <li t-if="company.website" class="list-inline-item">Web: <span t-field="company.website"/></li>
+                <li t-if="company.vat" class="list-inline-item"><t t-esc="company.country_id.vat_label or 'Tax ID'"/>: <span t-field="company.vat"/></li>
+            </ul>
+            <div t-field="company.report_footer"/>
+            <div t-if="report_type == 'pdf'">
+                Page: <span class="page"/> / <span class="topage"/>
+            </div>
+        </div>
+    </div>
+    </template>
+ <template id="report_compra">
+      <t t-call="web.html_container">
+        <t t-call="reportlogistica.rep_compra_template">
+         
+          <div class="page">
+          <table  class="table table-condensed" style="margin-top:20px; border: medium transparent;">
             <thead>
               <tr>
-                <th>N°</th>
-                <th>Producto</th>
-                <th>Unidad</th>
-                <th>Inventario</th>
-                <th>Cant compras confirmadas</th>
-                <th>Cantidad disponible</th>
-                <th>Dias de retraso</th>
-                <th>Dias inventario</th>
-                <th>Fecha compra</th>
-                <th>Fecha prevista</th>
+                <th style="font-size:10pt; border: medium transparent;" >N°</th>
+                <th style="font-size:10pt; border: medium transparent;" >Producto</th>
+                <th style="font-size:10pt; border: medium transparent;" >Unidad</th>
+                <th style="font-size:10pt; border: medium transparent;" >Inventario</th>
+                <th style="font-size:10pt; border: medium transparent;" >Cant compras confirmadas</th>
+                <th style="font-size:10pt; border: medium transparent;" >Cantidad disponible</th>
+                <th style="font-size:10pt; border: medium transparent;" >Dias de retraso</th>
+                <th style="font-size:10pt; border: medium transparent;" >Dias inventario</th>
+                <th style="font-size:10pt; border: medium transparent;" >Fecha compra</th>
+                <th style="font-size:10pt; border: medium transparent;" >Fecha prevista</th>
               </tr>
             </thead>
             <tbody>
               <tr t-foreach='docs' t-as='p'>
-                <td><t t-esc="p.default_code" /></td>
-                <td><t t-esc="p.name" /></td>
-                <td><t t-esc="p.uom_id.name" /></td>
-                <td><t t-esc="p.qty_available" /></td>
-                <td><t t-esc="p.cant_compr_confirm" /></td>
-                <td><t t-esc="p.qty_available" /></td>
-                <td><t t-esc="p.dias_retraso" /></td>
-                <td><t t-esc="'{0:,.2f}'.format(float(p.dias_invent))"/></td>
-                <td><t t-esc="p.fecha_pedido_compra" /></td>
-                <td><t t-esc="p.fecha_previs" /></td>
+                <td style="font-size:10pt; border: medium transparent; background: white;"><t t-esc="p.default_code" /></td>
+                <td style="font-size:10pt; border: medium transparent; background: white;"><t t-esc="p.name" /></td>
+                <td style="font-size:10pt; border: medium transparent; background: white;"><t t-esc="p.uom_id.name" /></td>
+                <td style="font-size:10pt; border: medium transparent; background: white;"><t t-esc="'{0:,.2f}'.format(float(p.qty_available))" /></td>
+                <td style="font-size:10pt; border: medium transparent; background: white;"><t t-esc="'{0:,.2f}'.format(float(p.cant_compr_confirm))"/></td>
+                <td style="font-size:10pt; border: medium transparent; background: white;"><t t-esc="'{0:,.2f}'.format(float(p.qty_available))" /></td>
+                <td style="font-size:10pt; border: medium transparent; background: white;" ><t t-esc="p.dias_retraso" /></td>
+                <td style="font-size:10pt; border: medium transparent; background: white;"><t t-esc="'{0:,.2f}'.format(float(p.dias_invent))"/></td>
+                <t t-if="p.fecha_pedido_compra">
+                  <td style="font-size:10pt; border: medium transparent; background: white;"><t t-esc="p.fecha_pedido_compra.strftime('%d-%m-%Y')"/></td>  
+                </t>
+                <t t-if="p.fecha_previs">
+                  <td style="font-size:10pt; border: medium transparent; background: white;"><t t-esc="p.fecha_previs.strftime('%d-%m-%Y')"/></td>
+                </t>
               </tr>
             </tbody>
           </table>
-        </div>
+          </div>
+          </t>
       </t>
-    </t>
-  </template>
+    </template>
+    <record id="paperformat_reporte_compra" model="report.paperformat"> 
+              <field name="name">Reporte de Cheques</field>
+              <field name="default" eval="True"/>
+              <field name="format">A4</field>
+              <field name="page_height">0</field>
+              <field name="page_width">0</field>
+              <field name="orientation">Landscape</field>
+              <field name="margin_left">6</field>
+              <field name="margin_right">6</field>
+              <field name="margin-bottom">20</field>
+              <field name="header_line" eval="False"/>
+              <field name="header_spacing">30</field>
+              <field name="dpi">90</field>
+    </record>
 </odoo>

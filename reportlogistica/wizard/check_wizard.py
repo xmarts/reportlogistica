@@ -102,8 +102,8 @@ class WizzardMateroaPrima(models.Model):
 	rango = fields.Selection([
 		('all', 'Mostrar todos los registros'),
 		('date', 'Filtrar por fecha')], default="all", string="Filtrar")
-	date_from = fields.Date(string='De')
-	date_to = fields.Date(string='Hasta')
+	date_from = fields.Datetime(string='De')
+	date_to = fields.Datetime(string='Hasta')
 
 
 	def filter(self):
@@ -115,7 +115,7 @@ class WizzardMateroaPrima(models.Model):
 				'type': 'ir.actions.act_window',
 				'views': [(tree_view_id, 'tree')],
 				'view_mode': 'form,tree',
-				'name':'Reporte de cheques',
+				'name': 'Materia Prima',
 				'res_model': 'product.template',
 				#'context':{'dato': 'all'},
 			}
@@ -125,11 +125,12 @@ class WizzardMateroaPrima(models.Model):
 				'type': 'ir.actions.act_window',
 				'views': [(tree_view_id, 'tree')],
 				'view_mode': 'form,tree',
-				'name': 'Reporte de cheques',
+				'name': 'Materia Prima',
 				'res_model': 'product.template',
-				'domain': [('fecha_previs', '>=', self.date_from),
-				('fecha_previs', '<=', self.date_to)],
+				'domain': ['&', ('fecha_pedido_compra', '>=', self.date_from),
+				('fecha_pedido_compra', '<=', self.date_to)],
 			}
+			print(action,self.date_from,self.date_to)
 			return action
 
 
@@ -141,13 +142,13 @@ class InheritProductTemplate(models.Model):
 		cr = self.env.cr
 		cr.execute('select max(id) from wizard_materia_prima')
 		id_returned = cr.fetchone()
-		dato = self.env['wizard.materia.prima'].search([('id','=',id_returned)])
+		dato = self.env['wizard.materia.prima'].search([('id', '=', id_returned)])
 		for rec in dato:
 			print('forrrrrrrrrrrrr')
 			if dato.date_from != 'False' and dato.date_to != 'False':
 				file = {
-				'fecha1': str(dato.date_from),
-				'fecha2': str(dato.date_to)
+					'fecha1': dato.date_from,
+					'fecha2': dato.date_to
 				}
 				lista.append(file)
 		return lista
