@@ -69,7 +69,7 @@
         <t t-call="reportlogistica.rep_compra_template">
          
           <div class="page">
-          <table  class="table table-condensed" style="margin-top:20px; border: medium transparent;">
+          <table  class="table" style="margin-top:20px; border: medium transparent;">
             <thead>
               <tr>
                 <th style="font-size:10pt; border: medium transparent;" >N°</th>
@@ -89,11 +89,11 @@
                 <td style="font-size:10pt; border: medium transparent; background: white;"><t t-esc="p.default_code" /></td>
                 <td style="font-size:10pt; border: medium transparent; background: white;"><t t-esc="p.name" /></td>
                 <td style="font-size:10pt; border: medium transparent; background: white;"><t t-esc="p.uom_id.name" /></td>
-                <td style="font-size:10pt; border: medium transparent; background: white;"><t t-esc="'{0:,.2f}'.format(float(p.qty_available))" /></td>
-                <td style="font-size:10pt; border: medium transparent; background: white;"><t t-esc="'{0:,.2f}'.format(float(p.cant_compr_confirm))"/></td>
-                <td style="font-size:10pt; border: medium transparent; background: white;"><t t-esc="'{0:,.2f}'.format(float(p.qty_available))" /></td>
-                <td style="font-size:10pt; border: medium transparent; background: white;" ><t t-esc="p.dias_retraso" /></td>
-                <td style="font-size:10pt; border: medium transparent; background: white;"><t t-esc="'{0:,.2f}'.format(float(p.dias_invent))"/></td>
+                <td style="font-size:10pt; border: medium transparent; background: white;" class="text-right"><t t-esc="'{0:,.2f}'.format(float(p.qty_available))" /></td>
+                <td style="font-size:10pt; border: medium transparent; background: white;" class="text-right"><t t-esc="'{0:,.2f}'.format(float(p.cant_compr_confirm))"/></td>
+                <td style="font-size:10pt; border: medium transparent; background: white;" class="text-right"><t t-esc="'{0:,.2f}'.format(float(p.qty_available))" /></td>
+                <td style="font-size:10pt; border: medium transparent; background: white;" class="text-right"><t t-esc="p.dias_retraso" /></td>
+                <td style="font-size:10pt; border: medium transparent; background: white;" class="text-right"><t t-esc="'{0:,.2f}'.format(float(p.dias_invent))"/></td>
                 <t t-if="p.fecha_pedido_compra">
                   <td style="font-size:10pt; border: medium transparent; background: white;"><t t-esc="p.fecha_pedido_compra.strftime('%d-%m-%Y')"/></td>  
                 </t>
