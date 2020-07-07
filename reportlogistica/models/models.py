@@ -16,9 +16,9 @@ class ReportCompra(models.Model):
 	cant_compr_confirm = fields.Integer(string="Cant compras confirmadas", store=True, compute="TotalComprasConfirm")
 	# pedido_compra = fields.Date()
 	@api.one
-	def ComputeReport(self):			
+	def ComputeReport(self):
 		product = self.env['product.product'].search([('product_tmpl_id','=',self.id)])
-		busquedad = self.env['stock.move'].search([('product_id','=',product.id)], order='id desc', limit=1)
+		busquedad = self.env['stock.move'].search([('product_id','=',product.id), ('state', '!=', 'cancel')], order='id desc', limit=1)
 		self.fecha_previs = busquedad.date_expected
 		self.fecha_pedido_compra = busquedad.purchase_line_id.order_id.date_order
 		print(self.fecha_pedido_compra)
