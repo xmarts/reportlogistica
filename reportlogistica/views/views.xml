@@ -8,7 +8,7 @@
       <field name="arch" type="xml">
         <xpath expr="//field[@name='barcode']" position="after">
           <field name="fecha_previs"/>
-          <field name = "fecha_pedido_compra" invisible="1"/>
+          <field name = "fecha_pedido_compra" invisible="0"/>
         </xpath>
       </field>
     </record>

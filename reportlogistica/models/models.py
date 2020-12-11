@@ -19,9 +19,9 @@ class ReportCompra(models.Model):
 	def ComputeReport(self):			
 		product = self.env['product.product'].search([('product_tmpl_id','=',self.id)])
 		busquedad = self.env['stock.move'].search([('product_id','=',product.id)], order='id desc', limit=1)
-		self.fecha_previs = busquedad.date_expected
+		self.fecha_previs = busquedad.date
 		self.fecha_pedido_compra = busquedad.purchase_line_id.order_id.date_order
-		print(self.fecha_pedido_compra)
+		print('jjjjjjjjjjjjjjjjjjjjjjjjj', self.fecha_pedido_compra)
 
 	@api.one
 	def DiasRetraso(self):
@@ -63,11 +63,20 @@ class ReportCompra(models.Model):
 
 	@api.one
 	def TotalComprasConfirm(self):
-		product = self.env['product.product'].search([('product_tmpl_id','=',self.id)])
-		stock_move = self.env['stock.move'].search([('product_id','=',product.id), ('picking_id.state','in',('confirmed','assigned')), ('picking_id.picking_type_code','=',"incoming")], order='id desc')
+		self.cant_compr_confirm = 0
+		for rec in self:
+			print('EEEEEEO')
+			product = self.env['product.product'].search([('product_tmpl_id','=',rec.id)])
+			print(product.name)
+			# stock_move = self.env['stock.move'].search([('product_id','=',product.id), ('picking_id.state','in',('confirmed','assigned')), ('picking_id.picking_type_code','=',"incoming")], order='id desc')
+			purchase_order = self.env['purchase.order'].search([('product_id','=',product.id), ('state','=','purchase')], order='id desc')
 
-		for x in stock_move:
-			self.cant_compr_confirm += x.purchase_line_id.product_qty
+			for x in purchase_order:
+				for z in x.order_line:
+					print("EEEEEEEEEEOOOOOOOOOOOOO")
+					if z.product_id.id == product.id:
+						print('OHHHHH RIGHT',z.product_qty)
+						rec.cant_compr_confirm += z.product_qty
 
 class InheritPayment(models.Model):
 	_inherit = 'account.payment'

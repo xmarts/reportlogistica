@@ -62,6 +62,7 @@ class ReportWizard(models.TransientModel):
 				('payment_method_id','=',4),
 				('journal_id','=',self.cuenta.id)],
 			}
+
 class inherit_account_pay(models.Model):
 	_inherit = 'account.payment'
 
@@ -106,10 +107,15 @@ class WizzardMateroaPrima(models.Model):
 	date_to = fields.Datetime(string='Hasta')
 
 
+
+
 	def filter(self):
 		self.ensure_one()
 		tree_view_id = self.env.ref('reportlogistica.view_informe_compra').id
 		
+		total_com = self.env['product.template'].search([('id','!=', 0)])
+		for rec in total_com:
+			rec.TotalComprasConfirm()
 		if self.rango == 'all':
 			action = {
 				'type': 'ir.actions.act_window',
