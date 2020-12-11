@@ -78,7 +78,7 @@ class ReportCompra(models.Model):
 					print("EEEEEEEEEEOOOOOOOOOOOOO")
 					if z.product_id.id == product.id:
 						print('OHHHHH RIGHT',z.product_qty)
-						rec.cant_compr_confirm += z.product_qty
+						rec.cant_compr_confirm += (z.product_qty - z.qty_received)
 
 class InheritPayment(models.Model):
 	_inherit = 'account.payment'
