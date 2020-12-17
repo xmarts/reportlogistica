@@ -18,12 +18,12 @@ class ReportCompra(models.Model):
 	@api.one
 	def ComputeReport(self):
 		product = self.env['product.product'].search([('product_tmpl_id','=',self.id)])
-		busquedad = self.env['stock.move'].search([('product_id','=',product.id), ('state', '!=', 'cancel')], order='id desc', limit=1)
-		self.fecha_previs = busquedad.date_expected
-		busquedad = self.env['stock.move'].search([('product_id','=',product.id)], order='id desc', limit=1)
-		self.fecha_previs = busquedad.date
-		self.fecha_pedido_compra = busquedad.purchase_line_id.order_id.date_order
-		print('jjjjjjjjjjjjjjjjjjjjjjjjj', self.fecha_pedido_compra)
+		busquedad = self.env['purchase.order.line'].search([('product_id','=',product.id)], order='id desc', limit=1)
+		self.fecha_previs = busquedad.date_planned
+		# busquedad = self.env['stock.move'].search([('product_id','=',product.id)], order='id desc', limit=1)
+		# self.fecha_previs = busquedad.date
+		# self.fecha_pedido_compra = busquedad.purchase_line_id.order_id.date_order
+		# print('jjjjjjjjjjjjjjjjjjjjjjjjj', self.fecha_pedido_compra)
 
 	@api.one
 	def DiasRetraso(self):

@@ -116,6 +116,7 @@ class WizzardMateroaPrima(models.Model):
 		total_com = self.env['product.template'].search([('id','!=', 0)])
 		for rec in total_com:
 			rec.TotalComprasConfirm()
+			rec.ComputeReport()
 		if self.rango == 'all':
 			action = {
 				'type': 'ir.actions.act_window',
