@@ -2,7 +2,7 @@
 
 from odoo import models, fields, api
 
-from datetime import date
+from datetime import timedelta, date
 import datetime
 import dateutil.parser
 
@@ -58,26 +58,49 @@ class ReportCompra(models.Model):
 			usuario = rec.name
 		return usuario
 
-	@api.one
-	def DiasInventario(self):
-		if self.dias_retraso > 0:
-			self.dias_invent = self.qty_available / self.dias_retraso
+	@api.multi
+	def DiasInventario(self, dias):
+		self.dias_invent = 0
+		fecha_anterior = ""
+		fecha_actual = ""
+		if dias:
+			dia_actual = datetime.datetime.now().strftime('%d')
+			mes_actual = datetime.datetime.now().strftime('%m')
+			ano_actual = datetime.datetime.now().strftime('%Y')
+			fecha_actual = date(int(ano_actual),int(mes_actual),int(dia_actual))
+			fecha_anterior = date(int(ano_actual),int(mes_actual),int(dia_actual)) + timedelta(days=-dias)
+		if dias:
+			if dias > 0:
+				product = self.env['product.product'].search([('product_tmpl_id','=',self.id)])
+				move_line = self.env['stock.move.line'].search([('product_id','=', product.id)])
+				consumo_diario_total = 0
+				for rec in move_line:
+					rec.dias_invent = 0
+					print(rec.date.date(), rec.date.date(), fecha_anterior, 'ESTO', fecha_actual)
+					if rec.date.date() <= fecha_actual and rec.date.date() >= fecha_anterior:
+						if rec.location_dest_id.check_location == True:
+							print(rec.qty_done)
+							consumo_diario_total += rec.qty_done
+				consumo_diario = consumo_diario_total / dias
+				if consumo_diario > 0 and self.qty_available > 0: 
+					self.dias_invent = consumo_diario / self.qty_available
+					print('111111111111111111111111', self.dias_invent)
 
-	@api.one
+	@api.multi
 	def TotalComprasConfirm(self):
 		self.cant_compr_confirm = 0
 		for rec in self:
-			print('EEEEEEO')
+			# print('EEEEEEO')
 			product = self.env['product.product'].search([('product_tmpl_id','=',rec.id)])
-			print(product.name)
+			# print(product.name)
 			# stock_move = self.env['stock.move'].search([('product_id','=',product.id), ('picking_id.state','in',('confirmed','assigned')), ('picking_id.picking_type_code','=',"incoming")], order='id desc')
 			purchase_order = self.env['purchase.order'].search([('product_id','=',product.id), ('state','=','purchase')], order='id desc')
 
 			for x in purchase_order:
 				for z in x.order_line:
-					print("EEEEEEEEEEOOOOOOOOOOOOO")
+					# print("EEEEEEEEEEOOOOOOOOOOOOO")
 					if z.product_id.id == product.id:
-						print('OHHHHH RIGHT',z.product_qty)
+						# print('OHHHHH RIGHT',z.product_qty)
 						rec.cant_compr_confirm += (z.product_qty - z.qty_received)
 
 class InheritPayment(models.Model):
@@ -90,3 +113,9 @@ class InheritPayment(models.Model):
 		for rec in login:
 			usuario = rec.name
 		return usuario
+
+
+class StockLocation(models.Model):
+	_inherit = 'stock.location'
+
+	check_location = fields.Boolean(string="Virtual Locations", default=False)

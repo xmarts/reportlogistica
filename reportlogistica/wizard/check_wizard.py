@@ -102,22 +102,24 @@ class WizzardMateroaPrima(models.Model):
 
 	rango = fields.Selection([
 		('all', 'Mostrar todos los registros'),
-		('date', 'Filtrar por fecha')], default="all", string="Filtrar")
+		('pur', 'Puede ser Comprado')], default="all", string="Filtrar")
 	date_from = fields.Datetime(string='De')
 	date_to = fields.Datetime(string='Hasta')
-
+	dias = fields.Integer(string="Dias", required=True,)
 
 
 
 	def filter(self):
 		self.ensure_one()
 		tree_view_id = self.env.ref('reportlogistica.view_informe_compra').id
-		
-		total_com = self.env['product.template'].search([('id','!=', 0)])
-		for rec in total_com:
-			rec.TotalComprasConfirm()
-			rec.ComputeReport()
+
 		if self.rango == 'all':
+			total_com = self.env['product.template'].search([('id','!=', 0)])
+			for rec in total_com:
+				rec.TotalComprasConfirm()
+				rec.ComputeReport()
+				rec.DiasRetraso()
+				rec.DiasInventario(self.dias)
 			action = {
 				'type': 'ir.actions.act_window',
 				'views': [(tree_view_id, 'tree')],
@@ -127,17 +129,21 @@ class WizzardMateroaPrima(models.Model):
 				#'context':{'dato': 'all'},
 			}
 			return action
-		if self.rango == 'date':
+		if self.rango == 'pur':
+			total_com = self.env['product.template'].search([('purchase_ok','=', True)])
+			for rec in total_com:
+				rec.TotalComprasConfirm()
+				rec.ComputeReport()
+				rec.DiasRetraso()
+				rec.DiasInventario(self.dias)
+
 			action = {
 				'type': 'ir.actions.act_window',
 				'views': [(tree_view_id, 'tree')],
 				'view_mode': 'form,tree',
 				'name': 'Materia Prima',
 				'res_model': 'product.template',
-				'domain': ['&', ('fecha_pedido_compra', '>=', self.date_from),
-				('fecha_pedido_compra', '<=', self.date_to)],
 			}
-			print(action,self.date_from,self.date_to)
 			return action
 
 

@@ -40,9 +40,10 @@
             <form string="Choose The Details">
                 <group>
                     <group>
+                        <field name="dias"/>
                         <field name="rango" widget="radio"/>
-                        <field name="date_from" attrs="{'invisible':[('rango','=','all')]}"/>
-                        <field name="date_to" attrs="{'invisible':[('rango','=','all')]}"/>
+                        <!-- <field name="date_from" attrs="{'invisible':[('rango','=','all')]}"/>
+                        <field name="date_to" attrs="{'invisible':[('rango','=','all')]}"/> -->
                     </group>
                 </group>
                 <footer>

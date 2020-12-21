@@ -8,7 +8,8 @@
       <field name="arch" type="xml">
         <xpath expr="//field[@name='barcode']" position="after">
           <field name="fecha_previs"/>
-          <field name = "fecha_pedido_compra" invisible="0"/>
+          <field name = "dias_invent" invisible="0"/>
+          <button name="DiasInventario" string="prueba" type="object" icon="icon"/>
         </xpath>
       </field>
     </record>
@@ -114,6 +115,17 @@
       parent="account.menu_finance_reports"
       action="action_informe_cheques"
       sequence="450"/>
+
+      <record id="inherit_stock_location_check" model="ir.ui.view">
+      <field name="name">inherit.stock.location</field>
+      <field name="model">stock.location</field>
+      <field name="inherit_id" ref="stock.view_location_form"/>
+      <field name="arch" type="xml">
+        <xpath expr="//field[@name='barcode']" position="after">
+          <field name="check_location"/>
+        </xpath>
+      </field>
+      </record>
 
   </data>
 </odoo>
