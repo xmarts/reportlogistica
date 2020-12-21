@@ -9,7 +9,7 @@
         <xpath expr="//field[@name='barcode']" position="after">
           <field name="fecha_previs"/>
           <field name = "dias_invent" invisible="0"/>
-          <button name="DiasInventario" string="prueba" type="object" icon="icon"/>
+          <!-- <button name="DiasInventario" string="prueba" type="object" icon="icon"/> -->
         </xpath>
       </field>
     </record>
