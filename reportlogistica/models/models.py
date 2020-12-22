@@ -79,8 +79,7 @@ class ReportCompra(models.Model):
 		return usuario
 
 	@api.multi
-	def DiasInventario(self):
-		dias = 60
+	def DiasInventario(self, dias):
 		self.dias_invent = 0
 		fecha_anterior = ""
 		fecha_actual = ""
