@@ -8,8 +8,8 @@
       <field name="arch" type="xml">
         <xpath expr="//field[@name='barcode']" position="after">
           <field name="fecha_previs"/>
-          <field name = "dias_invent" invisible="0"/>
-          <!-- <button name="DiasInventario" string="prueba" type="object" icon="icon"/> -->
+<!--           <field name="dias_invent" invisible="0"/>
+          <button name="DiasInventario" string="prueba" type="object" icon="icon"/>-->        
         </xpath>
       </field>
     </record>
@@ -25,7 +25,7 @@
           <field name="uom_id" string="Unidad"/>
           <field name="qty_available" string="Inventario"/>
           <field name="cant_compr_confirm" string="Cant compras confirmadas"/>
-          <field name="qty_available" string="Cantidad disponible"/>
+          <field name="disponible_qty" string="Cantidad disponible"/>
           <field name="dias_retraso" string="Dias de retraso"/>
           <field name="dias_invent" string="Dias inventario" />
           <field name="fecha_pedido_compra" string="Fecha compra"/>
