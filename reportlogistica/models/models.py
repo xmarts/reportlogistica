@@ -39,7 +39,7 @@ class ReportCompra(models.Model):
 		for rec in busquedad:
 			reci += rec.qty_received
 
-			if busquedad.qty_received == 0:
+			if rec.qty_received == 0:
 				rec.fecha_previs = rec.date_planned
 			else:
 				rec.fecha_previs = ''
