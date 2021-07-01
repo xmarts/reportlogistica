@@ -27,7 +27,7 @@ class ReportCompra(models.Model):
 				for z in x.order_line:
 					if z.product_id.id == product.id:
 						rec.cant_compr_confirm += (z.product_qty - z.qty_received)
-						if x.qty_received == 0:
+						if z.qty_received == 0:
 							rec.fecha_pedido_compra = x.date_order
 		self.disponible_qty = self.qty_available + self.cant_compr_confirm
 	
