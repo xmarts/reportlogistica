@@ -26,22 +26,23 @@ class ReportCompra(models.Model):
 			for x in purchase_order:
 				for z in x.order_line:
 					if z.product_id.id == product.id:
-						rec.fecha_pedido_compra = x.date_order
 						rec.cant_compr_confirm += (z.product_qty - z.qty_received)
+						if x.qty_received == 0:
+							rec.fecha_pedido_compra = x.date_order
 		self.disponible_qty = self.qty_available + self.cant_compr_confirm
 	
 	@api.one
 	def ComputeReport(self):
 		product = self.env['product.product'].search([('product_tmpl_id','=',self.id)])
-		busquedad = self.env['purchase.order.line'].search([('product_id','=',product.id)], order='id desc', limit=1)
+		busquedad = self.env['purchase.order.line'].search([('product_id','=',product.id)], order='id desc')
 		reci = 0
 		for rec in busquedad:
 			reci += rec.qty_received
 
-		if reci > 0:
-			self.fecha_previs = busquedad.date_planned
-		else:
-			self.fecha_previs = ''
+			if busquedad.qty_received == 0:
+				rec.fecha_previs = rec.date_planned
+			else:
+				rec.fecha_previs = ''
 
 	@api.one
 	def DiasRetraso(self):
