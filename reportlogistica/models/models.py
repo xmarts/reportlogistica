@@ -29,6 +29,7 @@ class ReportCompra(models.Model):
 						rec.cant_compr_confirm += (z.product_qty - z.qty_received)
 						if z.qty_received == 0:
 							rec.fecha_pedido_compra = x.date_order
+							rec.fecha_previs = z.date_planned
 		self.disponible_qty = self.qty_available + self.cant_compr_confirm
 	
 	@api.one
@@ -39,10 +40,10 @@ class ReportCompra(models.Model):
 		for rec in busquedad:
 			reci += rec.qty_received
 
-			if rec.qty_received == 0:
-				rec.fecha_previs = rec.date_planned
-			else:
-				rec.fecha_previs = ''
+			# if rec.qty_received == 0:
+			# 	rec.fecha_previs = rec.date_planned
+			# else:
+			# 	rec.fecha_previs = ''
 
 	@api.one
 	def DiasRetraso(self):
