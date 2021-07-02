@@ -26,12 +26,11 @@ class ReportCompra(models.Model):
 			purchase_order = self.env['purchase.order'].search([('product_id','=',product.id), ('state','=','purchase')], order='id desc')
 			for x in purchase_order:
 				for z in x.order_line:
-					rec.cant_compr_confirm = 0
 					if z.product_id.id == product.id:
 						rec.cant_compr_confirm += (z.product_qty - z.qty_received)
-						rec.fecha_previs = ''
-						rec.fecha_pedido_compra = ''
 						if z.qty_received == 0:
+							rec.fecha_previs = ''
+							rec.fecha_pedido_compra = ''
 							rec.fecha_pedido_compra = x.date_order
 							rec.fecha_previs = z.date_planned
 		self.disponible_qty = self.qty_available + self.cant_compr_confirm
