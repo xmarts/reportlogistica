@@ -20,13 +20,17 @@ class ReportCompra(models.Model):
 	@api.multi
 	def TotalComprasConfirm(self):
 		self.cant_compr_confirm = 0
+		self.disponible_qty = 0
 		for rec in self:
 			product = self.env['product.product'].search([('product_tmpl_id','=',rec.id)])
 			purchase_order = self.env['purchase.order'].search([('product_id','=',product.id), ('state','=','purchase')], order='id desc')
 			for x in purchase_order:
 				for z in x.order_line:
+					rec.cant_compr_confirm = 0
 					if z.product_id.id == product.id:
 						rec.cant_compr_confirm += (z.product_qty - z.qty_received)
+						rec.fecha_previs = ''
+						rec.fecha_pedido_compra = ''
 						if z.qty_received == 0:
 							rec.fecha_pedido_compra = x.date_order
 							rec.fecha_previs = z.date_planned
@@ -70,6 +74,7 @@ class ReportCompra(models.Model):
 			ano_actual = datetime.datetime.now().strftime('%Y')
 			fecha_actual = date(int(ano_actual),int(mes_actual),int(dia_actual))
 			dias = abs(fecha_actual - fecha_retrazo).days
+			self.dias_retraso = ''
 			if self.cant_compr_confirm > 0:
 				self.dias_retraso = dias
 			# print ("%s dias de diferencia entre %s y el %s" % (dias, fecha_retrazo, fecha_actual))
@@ -106,6 +111,7 @@ class ReportCompra(models.Model):
 							consumo_diario_total += rec.qty_done
 				# print('aaaaaaaaaaaaaaaaaaa', consumo_diario_total, product.name)
 				consumo_diario = consumo_diario_total / dias
+				self.dias_invent = 0
 				if consumo_diario > 0 and self.qty_available > 0: 
 					self.dias_invent =  self.qty_available / consumo_diario
 
