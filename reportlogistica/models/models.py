@@ -20,9 +20,9 @@ class ReportCompra(models.Model):
 	@api.multi
 	def TotalComprasConfirm(self):
 		self.cant_compr_confirm = 0
-		self.disponible_qty = 0
-		self.fecha_previs = ''
-		self.fecha_pedido_compra = ''
+		self.disponible_qty = 0 
+		self.fecha_previs =''
+		self.fecha_pedido_compra =''
 		for rec in self:
 			product = self.env['product.product'].search([('product_tmpl_id','=',rec.id)])
 			purchase_order = self.env['purchase.order'].search([('product_id','=',product.id), ('state','=','purchase')], order='id desc')
