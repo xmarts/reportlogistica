@@ -37,7 +37,6 @@
     <record id="action_informe_compra" model="ir.actions.act_window">
       <field name="name">Informe de compra</field>
       <field name="res_model">product.template</field>
-      <field name="view_type">form</field>
       <field name="view_mode">tree,form</field>
       <field eval="False" name="view_id"/>
       <field name="search_view_id" ref="view_informe_compra"/>
@@ -70,12 +69,13 @@
       <field name="type">tree</field>
       <field name="arch" type="xml">
         <tree string="Informe de cheques" create="false">
-          <field name="payment_date" string="Fecha"/>
-          <field name="move_name" string="Póliza"/>
-          <field name="check_number" string="No. de Cheque"/>
+          <field name="date" string="Fecha"/>
+          <!-- <field name="move_name" string="Póliza"/>  NO ENCUNTRO SIMILAR-->
+          <!-- <field name="check_number" string="No. de Cheque"/>  EXISTE EN check_number-->
           <field name="journal_id" string="No. de Banco"/>
           <field name="partner_id" string="Descripcion"/>
-          <field name="communication" string="Observaciones"/>
+          <!-- <field name="communication" string="Observaciones"/> -->
+          <field name="ref" string="Memo"/> 
           <field name="amount" string="Importe"/>
           <field name="state" string="Estado"/>
           <field name="retenido" string="Retenido"/>
@@ -87,7 +87,6 @@
     <record id="action_informe_cheques" model="ir.actions.act_window">
       <field name="name">Informe de cheques</field>
       <field name="res_model">account.payment</field>
-      <field name="view_type">form</field>
       <field name="view_mode">tree,form</field>
       <field name="domain">[('payment_method_id','=',4)]</field>
       <field eval="False" name="view_id"/>
